@@ -25,3 +25,8 @@ export async function getLatest(type: "movie" | "tv") {
   const res = await fetch(`${BASE_URL}/${type}/latest?api_key=${API_KEY}`);
   return res.json();
 }
+
+export async function getAiringToday() {
+  const res = await fetch(`${BASE_URL}/tv/airing_today?api_key=${API_KEY}`);
+  return res.json();
+}
