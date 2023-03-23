@@ -3,9 +3,9 @@
 import { IconStarFilled } from "@tabler/icons-react";
 import Image from "next/image";
 import { BACKDROP_IMAGE } from "~/lib/constants";
-import { TrendingResource } from "~/lib/types";
+import { Resource } from "~/lib/types";
 
-export function Featured({ item }: { item: TrendingResource }) {
+export function Featured({ item }: { item: Resource }) {
   return (
     <div className="w-full h-[600px] relative">
       <BackdropImage item={item} />
@@ -19,7 +19,7 @@ export function Featured({ item }: { item: TrendingResource }) {
   );
 }
 
-function BackdropImage({ item }: { item: TrendingResource }) {
+function BackdropImage({ item }: { item: Resource }) {
   return (
     <div className="relative w-full h-full">
       <Image
@@ -31,15 +31,18 @@ function BackdropImage({ item }: { item: TrendingResource }) {
   );
 }
 
-function FeaturedContent({ item }: { item: TrendingResource }) {
+function FeaturedContent({ item }: { item: Resource }) {
   return (
     <>
       <h2 className="text-4xl font-semibold tracking-tight">{item?.title ?? item?.name}</h2>
       <div className="flex items-end mt-4 space-x-2">
         <IconStarFilled className="text-pink-500" />
-        <span className="text-sm font-light text-gray-100">
-          {item.vote_average.toFixed(1)} rating
-        </span>
+        {item.vote_average && (
+          <span className="text-sm font-light text-gray-100">
+            {item.vote_average.toFixed(1)} rating
+          </span>
+        )}
+
         <span className="text-sm font-light text-gray-100">
           {item?.release_date ?? item?.first_air_date}
         </span>
