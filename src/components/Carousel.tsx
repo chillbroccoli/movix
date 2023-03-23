@@ -1,14 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { POSTER_IMAGE } from "~/lib/constants";
-import { TrendingResource } from "~/lib/types";
+import { Trending } from "~/lib/types";
 
-export function Carousel({ items, title }: { items: TrendingResource[]; title: string }) {
+export function Carousel({ items, title }: { items: Trending[]; title: string }) {
   return (
     <div className="p-4 mt-2">
       <h2 className="mb-4 text-2xl font-bold">{title}</h2>
 
-      <div className="flex p-4 space-x-4 overflow-x-scroll flex-nowrap snap-x">
+      <div className="flex p-4 space-x-6 overflow-x-scroll flex-nowrap snap-x">
         {items.map((item) => (
           <CarouselItem key={item.id} item={item} />
         ))}
@@ -17,13 +17,13 @@ export function Carousel({ items, title }: { items: TrendingResource[]; title: s
   );
 }
 
-function CarouselItem({ item }: { item: TrendingResource }) {
+function CarouselItem({ item }: { item: Trending }) {
   return (
     <Link
       href={item.media_type === "movie" ? `/movies/${item.id}` : `/tv/${item.id}`}
-      className="relative group"
+      className="relative rounded-md group"
     >
-      <div className="snap-start w-[225px] h-[350px] flex-shrink-0 skew-y-3">
+      <div className="snap-start w-[225px] h-[350px] flex-shrink-0 skew-y-3 shadow-md shadow-white/20 rounded-md overflow-hidden">
         <div className="relative w-full h-full">
           <Image
             src={`${POSTER_IMAGE.W342}${item.poster_path}`}
