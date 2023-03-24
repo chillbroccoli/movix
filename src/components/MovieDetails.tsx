@@ -3,7 +3,7 @@
 import { IconExternalLink, IconStarFilled } from "@tabler/icons-react";
 import Image from "next/image";
 import { IMDB_LINK_BASE_URL, POSTER_IMAGE } from "~/lib/constants";
-import { converTime } from "~/lib/helpers/converTime";
+import { convertTime } from "~/lib/helpers/convertTime";
 import { formatMoney } from "~/lib/helpers/formatMoney";
 import { MovieDetails, Resource } from "~/lib/types";
 import { Carousel } from "./Carousel";
@@ -78,7 +78,7 @@ function MovieDetailsInfoList({ item }: { item: MovieDetails }) {
       </li>
       <li className="flex items-center">
         <span className="w-[120px]">Runtime</span>
-        <span>{converTime(item.runtime)}</span>
+        <span>{convertTime(item.runtime)}</span>
       </li>
       <li className="flex items-center">
         <span className="w-[120px]">Budget</span>
