@@ -1,9 +1,10 @@
+import Image from "next/image";
+import logo from "~/images/movix-color.png";
+
 export function Logo() {
   return (
-    <div>
-      <h1 className="text-3xl text-pink-500">
-        Movix<span className="text-white">.</span>
-      </h1>
+    <div className="relative w-16 h-16">
+      <Image src={logo} alt="Logo" fill />
     </div>
   );
 }
