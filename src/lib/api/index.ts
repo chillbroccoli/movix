@@ -1,6 +1,11 @@
 const BASE_URL = `https://api.themoviedb.org/3`;
 const API_KEY = process.env.API_KEY;
 
+export async function getDetails(type: "movie" | "tv", id: string) {
+  const res = await fetch(`${BASE_URL}/${type}/${id}?api_key=${API_KEY}`);
+  return res.json();
+}
+
 export async function getTrending(type: "movie" | "tv") {
   const res = await fetch(`${BASE_URL}/trending/${type}/day?api_key=${API_KEY}`);
   return res.json();
@@ -28,5 +33,10 @@ export async function getLatest(type: "movie" | "tv") {
 
 export async function getAiringToday() {
   const res = await fetch(`${BASE_URL}/tv/airing_today?api_key=${API_KEY}`);
+  return res.json();
+}
+
+export async function getSimilar(type: "movie" | "tv", id: string) {
+  const res = await fetch(`${BASE_URL}/${type}/${id}/similar?api_key=${API_KEY}`);
   return res.json();
 }
