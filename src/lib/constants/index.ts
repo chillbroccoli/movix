@@ -1,4 +1,4 @@
-import { IconDeviceTv, IconHeart, IconHome2, IconMovie } from "@tabler/icons-react";
+import { IconDeviceTv, IconHeart, IconHome2, IconMovie, IconSearch } from "@tabler/icons-react";
 
 export const SIDE_NAV = [
   {
@@ -21,9 +21,15 @@ export const SIDE_NAV = [
     icon: IconHeart,
     href: "/watchlist",
   },
+  {
+    name: "Search",
+    icon: IconSearch,
+    href: "/search",
+  },
 ];
 
 const TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p";
+export const IMDB_LINK_BASE_URL = "https://www.imdb.com/title";
 
 export const POSTER_IMAGE = {
   W92: `${TMDB_IMAGE_BASE_URL}/w92`,
@@ -39,5 +45,12 @@ export const BACKDROP_IMAGE = {
   W300: `${TMDB_IMAGE_BASE_URL}/w300`,
   W780: `${TMDB_IMAGE_BASE_URL}/w780`,
   W1280: `${TMDB_IMAGE_BASE_URL}/w1280`,
+  ORIGINAL: `${TMDB_IMAGE_BASE_URL}/original`,
+};
+
+export const PROFILE_IMAGE = {
+  W45: `${TMDB_IMAGE_BASE_URL}/w45`,
+  W185: `${TMDB_IMAGE_BASE_URL}/w185`,
+  H632: `${TMDB_IMAGE_BASE_URL}/h632`,
   ORIGINAL: `${TMDB_IMAGE_BASE_URL}/original`,
 };
