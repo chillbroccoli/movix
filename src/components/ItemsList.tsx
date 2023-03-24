@@ -22,8 +22,8 @@ export function ItemsList({
     <div className="p-4 px-8 pt-8">
       <h5 className="pb-8 text-3xl font-semibold tracking-tighter">{title}</h5>
 
-      <div className="grid grid-cols-5 gap-6">
-        {(shortened ? items.slice(0, 10) : items).map((item) => (
+      <div className="grid grid-cols-6 gap-6">
+        {(shortened ? items.slice(0, 12) : items).map((item) => (
           <ListItem key={item.id} item={item} hrefType={hrefType} />
         ))}
       </div>
@@ -37,7 +37,7 @@ function ListItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv
   const addToWatchList = (e: React.MouseEvent<HTMLButtonElement>, item: Resource) => {
     e.preventDefault();
 
-    if (watchlist.find((itemInList: Resource) => itemInList.id === item.id)) {
+    if ((watchlist ?? []).find((itemInList: Resource) => itemInList.id === item.id)) {
       setWatchlist(watchlist.filter((itemInList: Resource) => itemInList.id !== item.id));
     } else {
       const newItem = {
