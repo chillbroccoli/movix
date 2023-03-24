@@ -71,3 +71,29 @@ export type Resource = {
   video?: boolean;
   origin_country?: string[];
 };
+
+export type MovieDetails = {
+  id: number;
+  adult: boolean;
+  backdrop_path?: string;
+  budget: number;
+  genres: { id: number; name: string }[];
+  homepage?: string;
+  imdb_id: string;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path?: string;
+  tagline: string;
+  title: string;
+  video?: boolean;
+  vote_average: number;
+  vote_count: number;
+  spoken_languages: { iso_639_1: string; name: string }[];
+  production_companies: { id: number; name: string; logo_path?: string; origin_country: string }[];
+  production_countries: { iso_3166_1: string; name: string }[];
+  release_date: string;
+  revenue: number;
+  runtime: number;
+};
