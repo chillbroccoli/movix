@@ -9,8 +9,6 @@ import { MovieDetails, Resource } from "~/lib/types";
 import { Carousel } from "./Carousel";
 
 export function MovieDetails({ item, similar }: { item: MovieDetails; similar: Resource[] }) {
-  console.log(item);
-
   return (
     <div className="p-10 pt-16">
       <div className="flex space-x-12">
@@ -18,7 +16,9 @@ export function MovieDetails({ item, similar }: { item: MovieDetails; similar: R
         <MovieDetailsInfo item={item} />
       </div>
 
-      <Carousel title="Similar Movies" items={similar} />
+      <div className="pt-8">
+        <Carousel title="Similar Movies" items={similar} />
+      </div>
     </div>
   );
 }
