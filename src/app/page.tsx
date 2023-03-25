@@ -16,8 +16,14 @@ export default async function HomePage() {
   return (
     <div className="w-full">
       <Featured item={randomTrending} />
-      <Carousel items={moviesData.results} title="Trending Movies" hrefType="movies" />
-      <Carousel items={tvData.results} title="Trending Tv Shows" hrefType="tv" />
+      <div className="px-6 pb-12">
+        <div className="pt-8">
+          <Carousel items={moviesData.results} title="Trending Movies" hrefType="movies" />
+        </div>
+        <div className="pt-8">
+          <Carousel items={tvData.results} title="Trending Tv Shows" hrefType="tv" />
+        </div>
+      </div>
     </div>
   );
 }
