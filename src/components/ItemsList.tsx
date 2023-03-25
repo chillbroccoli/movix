@@ -1,11 +1,13 @@
 "use client";
 
-import { IconHeart, IconHeartFilled, IconStarFilled } from "@tabler/icons-react";
+import { IconHeart, IconHeartFilled, IconStarFilled, IconCalendar } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
+import clsx from "clsx";
 import { POSTER_IMAGE } from "~/lib/constants";
 import { useLocalStorage } from "~/lib/hooks/useLocalStorage";
 import { Resource } from "~/lib/types";
+import imageNotFound from "~/images/image_not_available.png";
 
 export function ItemsList({
   items = [],
@@ -52,7 +54,7 @@ function ListItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv
   };
 
   return (
-    <Link href={`/${hrefType}/${item.id}`} className="group">
+    <Link href={`/${hrefType}/${item.id}`} className="group" prefetch={false}>
       <div className="relative overflow-hidden rounded-md shadow-sm bg-zinc-800 shadow-white/20">
         <div className="relative">
           <ListItemPosterImage item={item} />
@@ -60,7 +62,7 @@ function ListItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv
             onClick={(e) => addToWatchList(e, item)}
             className="absolute rounded-bl-xl top-0 p-2 -right-[100%] bg-pink-500/80 group-hover:-right-0 transition-all duration-300 ease-in-out z-10"
           >
-            {watchlist.find((itemInList: Resource) => itemInList.id === item.id) ? (
+            {(watchlist ?? []).find((itemInList: Resource) => itemInList.id === item.id) ? (
               <IconHeartFilled className="text-white" />
             ) : (
               <IconHeart className="text-white" />
@@ -79,7 +81,7 @@ function ListItemPosterImage({ item }: { item: Resource }) {
   return (
     <div className="relative w-full h-[300px] overflow-hidden">
       <Image
-        src={`${POSTER_IMAGE.W342}${item.poster_path}`}
+        src={item.poster_path ? `${POSTER_IMAGE.W342}${item.poster_path}` : imageNotFound}
         alt={item?.title ?? item?.name ?? ""}
         fill
         className="transition-all duration-200 ease-in-out group-hover:scale-110"
@@ -91,25 +93,41 @@ function ListItemPosterImage({ item }: { item: Resource }) {
 function ListItemInfo({ item }: { item: Resource }) {
   return (
     <div className="p-2">
-      <div className="flex items-center justify-between mt-1">
-        {item.vote_average && (
-          <div className="flex items-center space-x-1">
-            <IconStarFilled className="text-pink-500" />
-            <span className="text-sm font-light text-gray-100">{item.vote_average.toFixed(1)}</span>
-          </div>
-        )}
+      <div className="flex items-center mt-1 space-x-2">
+        {item.vote_average && <Votes voteAverage={item.vote_average} />}
 
         {item?.release_date ? (
-          <span className="text-sm font-light text-gray-100">
-            {new Date(item.release_date).getFullYear()}
-          </span>
+          <ResourceDate date={item.release_date} />
         ) : item?.first_air_date ? (
-          <span className="text-sm font-light text-gray-100">
-            {new Date(item.first_air_date).getFullYear()}
-          </span>
+          <ResourceDate date={item.first_air_date} />
         ) : null}
       </div>
-      <p className="pt-3 pb-1 text-sm font-light">{item?.title ?? item?.name ?? ""}</p>
+      <p
+        className={clsx(
+          "pb-1 text-sm font-extralight text-zinc-100 flex items-end h-[50px]",
+          item.vote_average && (item?.release_date || item?.first_air_date) && "pt-3"
+        )}
+      >
+        {item?.title ?? item?.name ?? ""}
+      </p>
+    </div>
+  );
+}
+
+function ResourceDate({ date }: { date: string }) {
+  return (
+    <div className="flex items-center space-x-1">
+      <IconCalendar className="text-pink-500" size={16} />
+      <span className="text-sm font-extralight text-zinc-300">{new Date(date).getFullYear()}</span>
+    </div>
+  );
+}
+
+function Votes({ voteAverage }: { voteAverage: number }) {
+  return (
+    <div className="flex items-center space-x-1">
+      <IconStarFilled className="text-pink-500" size={16} />
+      <span className="text-sm font-extralight text-zinc-300">{voteAverage.toFixed(1)}</span>
     </div>
   );
 }
