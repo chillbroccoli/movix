@@ -1,22 +1,34 @@
 "use client";
 
-import { IconSearch } from "@tabler/icons-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 export function SearchBar() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q") || "");
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (query) {
+      router.push(`/search?q=${query}`);
+    }
+  };
+
   return (
-    <div className="mt-10">
-      <div className="relative mt-2 rounded-md shadow-sm">
+    <div>
+      <form onSubmit={onSubmit}>
         <input
           type="text"
-          name="search"
-          id="search"
-          className="block w-full bg-zinc-700 rounded-md border-0 pl-2 py-1.5 pr-10 text-gray-200 ring-1 ring-inset ring-pink-500 placeholder:text-gray-200 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6 outline-none"
+          name="query"
+          id="query"
+          className="block w-full px-6 py-4 text-lg text-gray-500 border-0 border-b-2 shadow-sm outline-none bg-zinc-800 border-b-zinc-600 placeholder:text-gray-500 placeholder:text-lg focus:ring-0 focus:border-b-pink-500"
           placeholder="Search..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
-        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-          <IconSearch className="w-5 h-5 text-gray-400" aria-hidden="true" />
-        </div>
-      </div>
+      </form>
     </div>
   );
 }
