@@ -103,3 +103,29 @@ export async function multiSearch(query?: string) {
 
   return data;
 }
+
+export async function getGenres(type: "movie" | "tv") {
+  const res = await fetch(
+    `${BASE_URL}/genre/${type}/list?api_key=${process.env.NEXT_PUBLIC_API_KEY}&language=en-US`
+  );
+  const data = await res.json();
+
+  if (data.success === false) {
+    throw new Error(data.status_message);
+  }
+
+  return data;
+}
+
+export async function getByGenre(type: "movie" | "tv", genreId: string, page = 1) {
+  const res = await fetch(
+    `${BASE_URL}/discover/${type}?api_key=${API_KEY}&with_genres=${genreId}&sort_by=popularity.desc&page=${page}`
+  );
+  const data = await res.json();
+
+  if (data.success === false) {
+    throw new Error(data.status_message);
+  }
+
+  return data;
+}
