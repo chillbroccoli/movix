@@ -4,22 +4,48 @@ import { IconHeart, IconHeartFilled, IconStarFilled, IconCalendar } from "@table
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
+import { useRouter, usePathname } from "next/navigation";
+import imageNotFound from "~/images/image_not_available.png";
 import { POSTER_IMAGE } from "~/lib/constants";
 import { useLocalStorage } from "~/lib/hooks/useLocalStorage";
 import { Resource } from "~/lib/types";
-import imageNotFound from "~/images/image_not_available.png";
+import { Pagination } from "./Pagination";
 
 export function ItemsList({
   items = [],
   title,
   shortened = false,
   hrefType = "movies",
+  withPagination = false,
+  currentPage,
+  totalPages,
 }: {
   items: Resource[];
   title: string;
   shortened?: boolean;
   hrefType?: "movies" | "tv";
+  withPagination?: boolean;
+  itemsPerPage?: number;
+  currentPage?: number;
+  totalPages?: number;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const goToNextPage = () => {
+    const pathnameItems = pathname.split("/");
+    pathnameItems.pop();
+    pathnameItems.push(String((currentPage ?? 1) + 1));
+    router.push(pathnameItems.join("/"));
+  };
+
+  const goToPreviousPage = () => {
+    const pathnameItems = pathname.split("/");
+    pathnameItems.pop();
+    pathnameItems.push(String((currentPage ?? 1) - 1));
+    router.push(pathnameItems.join("/"));
+  };
+
   return (
     <div className="p-4 px-8 pt-8">
       <h5 className="pb-8 text-3xl font-semibold tracking-tighter">{title}</h5>
@@ -29,6 +55,15 @@ export function ItemsList({
           <ListItem key={item.id} item={item} hrefType={hrefType} />
         ))}
       </div>
+
+      {withPagination ? (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          goToNextPage={goToNextPage}
+          goToPreviousPage={goToPreviousPage}
+        />
+      ) : null}
     </div>
   );
 }
@@ -54,7 +89,17 @@ function ListItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv
   };
 
   return (
-    <Link href={`/${hrefType}/${item.id}`} className="group" prefetch={false}>
+    <Link
+      href={
+        item?.media_type === "movie"
+          ? `/movies/${item.id}`
+          : item?.media_type === "tv"
+          ? `/tv/${item.id}`
+          : `/${hrefType}/${item.id}`
+      }
+      className="group"
+      prefetch={false}
+    >
       <div className="relative overflow-hidden rounded-md shadow-sm bg-zinc-800 shadow-white/20">
         <div className="relative">
           <ListItemPosterImage item={item} />
@@ -94,12 +139,14 @@ function ListItemInfo({ item }: { item: Resource }) {
   return (
     <div className="p-2">
       <div className="flex items-center mt-1 space-x-2">
-        {item.vote_average && <Votes voteAverage={item.vote_average} />}
+        {item.vote_average && item.vote_average > 0 ? (
+          <Votes voteAverage={item.vote_average} />
+        ) : null}
 
         {item?.release_date ? (
-          <ResourceDate date={item.release_date} />
+          <ReleaseOrAirDate date={item.release_date} />
         ) : item?.first_air_date ? (
-          <ResourceDate date={item.first_air_date} />
+          <ReleaseOrAirDate date={item.first_air_date} />
         ) : null}
       </div>
       <p
@@ -114,7 +161,7 @@ function ListItemInfo({ item }: { item: Resource }) {
   );
 }
 
-function ResourceDate({ date }: { date: string }) {
+function ReleaseOrAirDate({ date }: { date: string }) {
   return (
     <div className="flex items-center space-x-1">
       <IconCalendar className="text-pink-500" size={16} />
