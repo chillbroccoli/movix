@@ -7,7 +7,7 @@ import { Resource } from "~/lib/types";
 
 export function Featured({ item }: { item: Resource }) {
   return (
-    <div className="w-full h-[650px] relative">
+    <div className="w-full h-[450px] lg:h-[650px] relative">
       <BackdropImage item={item} />
 
       <div className="absolute top-0 bottom-0 left-0 right-0 bg-black/70">
@@ -48,7 +48,7 @@ function FeaturedContent({ item }: { item: Resource }) {
         </span>
       </div>
 
-      <p className="mt-4 max-w-[50%] text-md font-light text-gray-100 tracking-tighter">
+      <p className="mt-4 max-w-[75%] lg:max-w-[50%]  text-sm lg:text-md font-light text-gray-100 lg:tracking-tighter">
         {item.overview}
       </p>
     </>
