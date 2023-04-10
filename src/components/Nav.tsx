@@ -5,8 +5,8 @@ import { GenresDropdown } from "./GenresDropdown";
 
 export function Nav() {
   return (
-    <div className="mt-10">
-      <ul className="space-y-6">
+    <div className="h-full lg:mt-10">
+      <ul className="flex flex-row items-center justify-center h-full space-x-4 lg:items-start lg:justify-start lg:space-x-0 lg:space-y-6 lg:flex-col">
         {SIDE_NAV.map((item) => (
           <li
             key={item.href}
