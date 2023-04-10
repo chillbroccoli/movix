@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={clsx(inter.className, "h-full bg-zinc-900 text-white")}>
         <div className="w-full h-full">
           <Sidebar />
-          <div className="w-[calc(100%_-_100px)] ml-[100px] h-full flex flex-col justify-between relative">
+          <div className="lg:w-[calc(100%_-_100px)] w-full lg:ml-[100px] h-full flex flex-col justify-between relative">
             <main className="w-full">{children}</main>
             <Footer />
           </div>
