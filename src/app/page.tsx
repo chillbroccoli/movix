@@ -1,5 +1,6 @@
-import { Carousel } from "~/components/Carousel";
 import { Featured } from "~/components/Featured";
+import { ItemsList } from "~/components/ItemsList";
+import { ViewToggle } from "~/components/ViewToggle";
 import { getTrending } from "~/lib/api";
 import { getRandomResource } from "~/lib/helpers/getRandomResource";
 import { Movie, TvShow } from "~/lib/types";
@@ -14,16 +15,13 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full">
       <Featured item={randomTrending} />
-      <div className="px-6 pb-12">
-        <div className="pt-8">
-          <Carousel items={moviesData.results} title="Trending Movies" hrefType="movies" />
-        </div>
-        <div className="pt-8">
-          <Carousel items={tvData.results} title="Trending Tv Shows" hrefType="tv" />
-        </div>
+      <div className="pt-3">
+        <ViewToggle />
       </div>
+      <ItemsList items={moviesData.results} title="Trending Movies" hrefType="movies" />
+      <ItemsList items={tvData.results} title="Trending Tv Shows" hrefType="tv" />
     </div>
   );
 }
