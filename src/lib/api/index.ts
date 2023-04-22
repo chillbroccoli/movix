@@ -6,7 +6,7 @@ export async function getDetails(type: "movie" | "tv", id: string) {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -17,7 +17,7 @@ export async function getTrending(type: "movie" | "tv") {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -28,7 +28,7 @@ export async function getTopRated(type: "movie" | "tv") {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -39,7 +39,7 @@ export async function getPopular(type: "movie" | "tv") {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -50,7 +50,7 @@ export async function getMoviesNowPlaying() {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -61,7 +61,7 @@ export async function getLatest(type: "movie" | "tv") {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -72,7 +72,7 @@ export async function getAiringToday() {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -83,7 +83,7 @@ export async function getSimilar(type: "movie" | "tv", id: string) {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -98,7 +98,7 @@ export async function multiSearch(query?: string) {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -111,7 +111,7 @@ export async function getGenres(type: "movie" | "tv") {
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
@@ -124,7 +124,7 @@ export async function getByGenre(type: "movie" | "tv", genreId: string, page = 1
   const data = await res.json();
 
   if (data.success === false) {
-    throw new Error(data.status_message);
+    throw new Error(data?.status_message ?? "Something went wrong");
   }
 
   return data;
