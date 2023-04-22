@@ -4,12 +4,14 @@ import { IconHeart, IconHeartFilled, IconStarFilled, IconCalendar } from "@table
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import imageNotFound from "~/images/image_not_available.png";
 import { POSTER_IMAGE } from "~/lib/constants";
 import { useLocalStorage } from "~/lib/hooks/useLocalStorage";
 import { Resource } from "~/lib/types";
 import { Pagination } from "./Pagination";
+import { Carousel } from "./Carousel";
+import { useSettingsStore } from "~/lib/stores/settingsStore";
 
 export function ItemsList({
   items = [],
@@ -29,32 +31,46 @@ export function ItemsList({
   currentPage?: number;
   totalPages?: number;
 }) {
+  const displayMode = useSettingsStore((store) => store.displayMode);
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   const goToNextPage = () => {
-    const pathnameItems = pathname.split("/");
-    pathnameItems.pop();
-    pathnameItems.push(String((currentPage ?? 1) + 1));
-    router.push(pathnameItems.join("/"));
+    const params = new URLSearchParams();
+    const genre = searchParams.get("genre") ?? "";
+    const page = String((currentPage ?? 1) + 1);
+    params.set("genre", genre);
+    params.set("page", page);
+    const path = decodeURIComponent(`${pathname}?${params.toString()}`);
+    router.push(path);
   };
 
   const goToPreviousPage = () => {
-    const pathnameItems = pathname.split("/");
-    pathnameItems.pop();
-    pathnameItems.push(String((currentPage ?? 1) - 1));
-    router.push(pathnameItems.join("/"));
+    const params = new URLSearchParams();
+    const genre = searchParams.get("genre") ?? "";
+    const page = String((currentPage ?? 1) - 1);
+    params.set("genre", genre);
+    params.set("page", page);
+    const path = decodeURIComponent(`${pathname}?${params.toString()}`);
+    router.push(path);
   };
 
   return (
     <div className="p-4 px-8 pt-8">
-      <h5 className="pb-8 text-3xl font-semibold tracking-tighter">{title}</h5>
+      <h5 className="pb-4 text-3xl font-semibold tracking-tighter">{title}</h5>
 
-      <div className="grid grid-cols-6 gap-6">
-        {(shortened ? items.slice(0, 12) : items).map((item) => (
-          <ListItem key={item.id} item={item} hrefType={hrefType} />
-        ))}
-      </div>
+      {displayMode === "carousel" ? (
+        <div>
+          <Carousel items={items} hrefType={hrefType} />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
+          {(shortened ? items.slice(0, 12) : items).map((item) => (
+            <ListItem key={item.id} item={item} hrefType={hrefType} />
+          ))}
+        </div>
+      )}
 
       {withPagination ? (
         <Pagination
