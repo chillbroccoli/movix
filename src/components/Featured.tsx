@@ -3,11 +3,14 @@
 import { IconStarFilled } from "@tabler/icons-react";
 import Image from "next/image";
 import { BACKDROP_IMAGE } from "~/lib/constants";
+import { BREAKPOINTS } from "~/lib/constants/breakpoints";
+import { trimLongText } from "~/lib/helpers/trimLongText";
+import { useMediaQuery } from "~/lib/hooks/useMediaQuery";
 import { Resource } from "~/lib/types";
 
 export function Featured({ item }: { item: Resource }) {
   return (
-    <div className="w-full h-[450px] lg:h-[650px] relative">
+    <div className="w-full h-[400px] lg:h-[650px] relative">
       <BackdropImage item={item} />
 
       <div className="absolute top-0 bottom-0 left-0 right-0 bg-black/70">
@@ -32,6 +35,8 @@ function BackdropImage({ item }: { item: Resource }) {
 }
 
 function FeaturedContent({ item }: { item: Resource }) {
+  const matchesLargeScreen = useMediaQuery(`(min-width: ${BREAKPOINTS.LG}px)`);
+
   return (
     <>
       <h2 className="text-4xl font-semibold tracking-tight">{item?.title ?? item?.name}</h2>
@@ -49,7 +54,8 @@ function FeaturedContent({ item }: { item: Resource }) {
       </div>
 
       <p className="mt-4 max-w-[75%] lg:max-w-[50%]  text-sm lg:text-md font-light text-gray-100 lg:tracking-tighter">
-        {item.overview}
+        {item.overview &&
+          (!matchesLargeScreen ? <>{trimLongText(item.overview, 250)}</> : <>{item.overview}</>)}
       </p>
     </>
   );
