@@ -10,14 +10,14 @@ import { Carousel } from "./Carousel";
 
 export function TvShowDetails({ item, similar }: { item: TvShowDetails; similar: Resource[] }) {
   return (
-    <div className="p-10 pt-16">
-      <div className="flex space-x-12">
+    <div className="p-10 pt-8 lg:pt-16">
+      <div className="flex flex-col lg:space-x-12 lg:flex-row">
         <TvShowPosterImage src={item?.poster_path} title={item.name} />
         <TvShowDetailsInfo item={item} />
       </div>
 
       <div className="pt-8">
-        <Carousel title="Similar Shows" items={similar} />
+        <Carousel items={similar} />
       </div>
     </div>
   );
@@ -25,7 +25,7 @@ export function TvShowDetails({ item, similar }: { item: TvShowDetails; similar:
 
 function TvShowPosterImage({ src, title }: { src?: string; title: string }) {
   return (
-    <div className="relative h-[450px] min-w-[350px] overflow-hidden border-2 border-gray-700 rounded-md">
+    <div className="relative h-[450px] w-full lg:w-fit lg:min-w-[350px] overflow-hidden border-2 border-gray-700 rounded-md">
       <Image
         src={`${POSTER_IMAGE.W342}${src}`}
         alt={title}
@@ -38,7 +38,7 @@ function TvShowPosterImage({ src, title }: { src?: string; title: string }) {
 
 function TvShowDetailsInfo({ item }: { item: TvShowDetails }) {
   return (
-    <div className="flex flex-col justify-between">
+    <div className="flex flex-col justify-between pt-8 lg:pt-0">
       <div>
         <p className="mb-2 text-xl font-semibold tracking-tighter">{item.name}</p>
         <p>{item.tagline}</p>
@@ -87,7 +87,7 @@ function TvShowDetailsInfoList({ item }: { item: TvShowDetails }) {
       </li>
       <li className="flex items-center">
         <span className="w-[120px]">Networks</span>
-        <div className="flex space-x-1">
+        <div className="flex flex-wrap space-x-1">
           {item.networks.map((network, index) => (
             <span key={network.id}>
               {network.name}
@@ -98,7 +98,7 @@ function TvShowDetailsInfoList({ item }: { item: TvShowDetails }) {
       </li>
       <li className="flex items-center">
         <span className="w-[120px]">Genres</span>
-        <div className="flex space-x-1">
+        <div className="flex flex-wrap space-x-1">
           {item.genres.map((genre, index) => (
             <span key={genre.id}>
               {genre.name}
@@ -109,7 +109,7 @@ function TvShowDetailsInfoList({ item }: { item: TvShowDetails }) {
       </li>
       <li className="flex items-center">
         <span className="w-[120px]">Languages</span>
-        <div className="flex space-x-1">
+        <div className="flex flex-wrap space-x-1">
           {item.spoken_languages.map((language, index) => (
             <span key={language.name}>
               {language.name}
