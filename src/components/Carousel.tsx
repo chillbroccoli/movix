@@ -9,17 +9,13 @@ import imageNotFound from "~/images/image_not_available.png";
 
 export function Carousel({
   items,
-  title,
   hrefType = "movies",
 }: {
   items: Resource[];
-  title: string;
   hrefType?: "movies" | "tv";
 }) {
   return (
     <div>
-      <h2 className="text-2xl font-bold">{title}</h2>
-
       <div className="flex p-4 space-x-6 overflow-x-scroll flex-nowrap snap-x">
         {items.map((item) => (
           <CarouselItem key={item.id} item={item} hrefType={hrefType} />
