@@ -10,14 +10,14 @@ import { Carousel } from "./Carousel";
 
 export function MovieDetails({ item, similar }: { item: MovieDetails; similar: Resource[] }) {
   return (
-    <div className="p-10 pt-16">
-      <div className="flex space-x-12">
+    <div className="p-10 pt-8 lg:pt-16">
+      <div className="flex flex-col lg:space-x-12 lg:flex-row">
         <MoviePosterImage src={item?.poster_path} title={item.title} />
         <MovieDetailsInfo item={item} />
       </div>
 
       <div className="pt-8">
-        <Carousel title="Similar Movies" items={similar} />
+        <Carousel items={similar} />
       </div>
     </div>
   );
@@ -25,7 +25,7 @@ export function MovieDetails({ item, similar }: { item: MovieDetails; similar: R
 
 function MoviePosterImage({ src, title }: { src?: string; title: string }) {
   return (
-    <div className="relative h-[450px] min-w-[350px] overflow-hidden border-2 border-gray-700 rounded-md">
+    <div className="relative h-[450px] w-full lg:w-fit lg:min-w-[350px] overflow-hidden border-2 border-gray-700 rounded-md">
       <Image
         src={`${POSTER_IMAGE.W342}${src}`}
         alt={title}
@@ -38,15 +38,15 @@ function MoviePosterImage({ src, title }: { src?: string; title: string }) {
 
 function MovieDetailsInfo({ item }: { item: MovieDetails }) {
   return (
-    <div className="flex flex-col justify-between">
+    <div className="flex flex-col justify-between pt-8 lg:pt-0">
       <div>
         <p className="mb-2 text-xl font-semibold tracking-tighter">{item.title}</p>
         <p>{item.tagline}</p>
         <MovieDetailsInfoList item={item} />
       </div>
 
-      <div>
-        {item.imdb_id && (
+      {item.imdb_id && (
+        <div className="pt-4 lg:pt-0">
           <a
             className="inline-flex items-center gap-x-1.5 rounded-md bg-pink-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
             href={`${IMDB_LINK_BASE_URL}/${item.imdb_id}`}
@@ -56,8 +56,8 @@ function MovieDetailsInfo({ item }: { item: MovieDetails }) {
             Check on IMDB
             <IconExternalLink className="-ml-0.5 h-5 w-5" aria-hidden="true" />
           </a>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -90,7 +90,7 @@ function MovieDetailsInfoList({ item }: { item: MovieDetails }) {
       </li>
       <li className="flex items-center">
         <span className="w-[120px]">Genres</span>
-        <div className="flex space-x-1">
+        <div className="flex flex-wrap space-x-1">
           {item.genres.map((genre, index) => (
             <span key={genre.id}>
               {genre.name}
@@ -112,7 +112,7 @@ function MovieDetailsInfoList({ item }: { item: MovieDetails }) {
       </li>
       <li className="flex items-center">
         <span className="w-[120px]">Production</span>
-        <div className="flex space-x-1">
+        <div className="flex flex-wrap space-x-1">
           {item.production_companies.map((company, index) => (
             <span key={company.id}>
               {company.name}
