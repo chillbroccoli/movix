@@ -4,6 +4,8 @@ import { IconMenu2 } from "@tabler/icons-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getGenres } from "~/lib/api";
+import { BREAKPOINTS } from "~/lib/constants/breakpoints";
+import { useMediaQuery } from "~/lib/hooks/useMediaQuery";
 
 type Genre = {
   id: number;
@@ -11,6 +13,8 @@ type Genre = {
 };
 
 export function GenresDropdown() {
+  const matchesLargeScreen = useMediaQuery(`(min-width: ${BREAKPOINTS.LG}px)`);
+
   const [moviesGenres, setMoviesGenres] = useState<Genre[]>([]);
   const [tvGenres, setTvGenres] = useState<Genre[]>([]);
 
@@ -37,8 +41,8 @@ export function GenresDropdown() {
 
       <DropdownMenu.Portal>
         <DropdownMenu.Content
-          side="right"
-          className="max-w-[300px] bg-zinc-800 rounded-md shadow-sm shadow-white/20 border border-pink-500/70"
+          side={matchesLargeScreen ? "right" : "top"}
+          className="max-w-[300px] z-50 mr-6 lg:mr-0 bg-zinc-800 rounded-md shadow-sm shadow-white/20 border border-pink-500/70"
           sideOffset={5}
         >
           <Tabs.Root defaultValue="movies">
@@ -63,7 +67,7 @@ export function GenresDropdown() {
                     key={genre.id}
                     className="p-1 border border-pink-500 rounded-md outline-none data-[highlighted]:bg-pink-500/30 transition-all duration-200 ease-in-out"
                   >
-                    <Link href={`/movies/genre/${genre.id}/1`}>
+                    <Link href={`/movies?genre=${genre.id}&page=1`}>
                       <span>{genre.name}</span>
                     </Link>
                   </DropdownMenu.Item>
@@ -77,7 +81,7 @@ export function GenresDropdown() {
                     key={genre.id}
                     className="p-1 border border-pink-500 rounded-md outline-none data-[highlighted]:bg-pink-500/30 transition-all duration-200 ease-in-out"
                   >
-                    <Link href={`/tv/genre/${genre.id}/1`}>
+                    <Link href={`/tv?genre=${genre.id}&page=1`}>
                       <span>{genre.name}</span>
                     </Link>
                   </DropdownMenu.Item>
