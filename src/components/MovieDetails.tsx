@@ -1,10 +1,14 @@
 "use client";
 
-import { IconExternalLink, IconStarFilled } from "@tabler/icons-react";
+import { IconExternalLink, IconHeart, IconHeartFilled, IconStarFilled } from "@tabler/icons-react";
 import Image from "next/image";
+import { useEffect } from "react";
 import { IMDB_LINK_BASE_URL, POSTER_IMAGE } from "~/lib/constants";
+import { BREAKPOINTS } from "~/lib/constants/breakpoints";
 import { convertTime } from "~/lib/helpers/convertTime";
 import { formatMoney } from "~/lib/helpers/formatMoney";
+import { useMediaQuery } from "~/lib/hooks/useMediaQuery";
+import { useWatchlistStore, WatchlistItem } from "~/lib/stores/watchlist-store";
 import { MovieDetails, Resource } from "~/lib/types";
 import { Carousel } from "./Carousel";
 
@@ -17,6 +21,7 @@ export function MovieDetails({ item, similar }: { item: MovieDetails; similar: R
       </div>
 
       <div className="pt-8">
+        <h5 className="pb-4 text-3xl font-semibold tracking-tighter">Similar Movies</h5>
         <Carousel items={similar} />
       </div>
     </div>
@@ -37,6 +42,31 @@ function MoviePosterImage({ src, title }: { src?: string; title: string }) {
 }
 
 function MovieDetailsInfo({ item }: { item: MovieDetails }) {
+  const matchesLargeScreen = useMediaQuery(`(min-width: ${BREAKPOINTS.LG}px)`);
+  const watchlist = useWatchlistStore((store) => store.watchlist);
+  const setWatchlist = useWatchlistStore((store) => store.setWatchlist);
+
+  useEffect(() => {
+    useWatchlistStore.persist.rehydrate();
+  }, []);
+
+  const addToWatchList = (e: React.MouseEvent<HTMLButtonElement>, item: Resource) => {
+    e.preventDefault();
+    if ((watchlist ?? []).find((itemInList: Resource) => itemInList.id === item.id)) {
+      setWatchlist(watchlist.filter((itemInList: Resource) => itemInList.id !== item.id));
+    } else {
+      const newItem = {
+        id: item.id,
+        ...(item.title && { title: item.title }),
+        ...(item.name && { name: item.name }),
+        ...(item.poster_path && { poster_path: item.poster_path }),
+        resourceType: "movie",
+      } as WatchlistItem;
+
+      setWatchlist([...watchlist, newItem]);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-between pt-8 lg:pt-0">
       <div>
@@ -44,6 +74,21 @@ function MovieDetailsInfo({ item }: { item: MovieDetails }) {
         <p>{item.tagline}</p>
         <MovieDetailsInfoList item={item} />
       </div>
+
+      {!matchesLargeScreen ? (
+        <div className="pt-4 lg:pt-0">
+          <button
+            onClick={(e) => addToWatchList(e, item)}
+            className="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-transparent border rounded-md shadow-sm border-pink-500/70 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
+          >
+            {(watchlist ?? []).find((itemInList: Resource) => itemInList.id === item.id) ? (
+              <IconHeartFilled className="text-pink-500/70" />
+            ) : (
+              <IconHeart className="text-pink-500/70" />
+            )}
+          </button>
+        </div>
+      ) : null}
 
       {item.imdb_id && (
         <div className="pt-4 lg:pt-0">
@@ -89,7 +134,7 @@ function MovieDetailsInfoList({ item }: { item: MovieDetails }) {
         <span>{formatMoney(item.revenue)}</span>
       </li>
       <li className="flex items-center">
-        <span className="w-[120px]">Genres</span>
+        <span className="min-w-[120px] w-fit overflow-hidden">Genres</span>
         <div className="flex flex-wrap space-x-1">
           {item.genres.map((genre, index) => (
             <span key={genre.id}>
@@ -100,7 +145,7 @@ function MovieDetailsInfoList({ item }: { item: MovieDetails }) {
         </div>
       </li>
       <li className="flex items-center">
-        <span className="w-[120px]">Languages</span>
+        <span className="min-w-[120px] w-fit overflow-hidden">Languages</span>
         <div className="flex space-x-1">
           {item.spoken_languages.map((language, index) => (
             <span key={language.name}>
@@ -111,7 +156,7 @@ function MovieDetailsInfoList({ item }: { item: MovieDetails }) {
         </div>
       </li>
       <li className="flex items-center">
-        <span className="w-[120px]">Production</span>
+        <span className="min-w-[120px] w-fit overflow-hidden">Production</span>
         <div className="flex flex-wrap space-x-1">
           {item.production_companies.map((company, index) => (
             <span key={company.id}>
