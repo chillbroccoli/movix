@@ -1,7 +1,9 @@
+"use client";
+
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import * as Tabs from "@radix-ui/react-tabs";
 import { IconMenu2 } from "@tabler/icons-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getGenres } from "~/lib/api";
 import { BREAKPOINTS } from "~/lib/constants/breakpoints";
@@ -13,6 +15,8 @@ type Genre = {
 };
 
 export function GenresDropdown() {
+  const router = useRouter();
+
   const matchesLargeScreen = useMediaQuery(`(min-width: ${BREAKPOINTS.LG}px)`);
 
   const [moviesGenres, setMoviesGenres] = useState<Genre[]>([]);
@@ -67,9 +71,10 @@ export function GenresDropdown() {
                     key={genre.id}
                     className="p-1 border border-pink-500 rounded-md outline-none data-[highlighted]:bg-pink-500/30 transition-all duration-200 ease-in-out"
                   >
-                    <Link href={`/movies?genre=${genre.id}&page=1`}>
+                    {/* Need to use buttons since, closing menu it's kinda not working with links */}
+                    <button onClick={() => router.push(`/movies?genre=${genre.id}&page=1`)}>
                       <span>{genre.name}</span>
-                    </Link>
+                    </button>
                   </DropdownMenu.Item>
                 ))}
               </div>
@@ -81,9 +86,9 @@ export function GenresDropdown() {
                     key={genre.id}
                     className="p-1 border border-pink-500 rounded-md outline-none data-[highlighted]:bg-pink-500/30 transition-all duration-200 ease-in-out"
                   >
-                    <Link href={`/tv?genre=${genre.id}&page=1`}>
+                    <button onClick={() => router.push(`/tv?genre=${genre.id}&page=1`)}>
                       <span>{genre.name}</span>
-                    </Link>
+                    </button>
                   </DropdownMenu.Item>
                 ))}
               </div>
