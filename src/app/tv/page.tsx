@@ -52,6 +52,7 @@ export default async function TvShowsPage({ searchParams }: { searchParams: Sear
           withPagination
           currentPage={values[0].page}
           totalPages={values[0].total_pages}
+          hrefType="tv"
         />
       ) : (
         <>
