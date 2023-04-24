@@ -7,11 +7,12 @@ import clsx from "clsx";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import imageNotFound from "~/images/image_not_available.png";
 import { POSTER_IMAGE } from "~/lib/constants";
-import { useLocalStorage } from "~/lib/hooks/useLocalStorage";
 import { Resource } from "~/lib/types";
 import { Pagination } from "./Pagination";
 import { Carousel } from "./Carousel";
-import { useSettingsStore } from "~/lib/stores/settingsStore";
+import { DisplayMode, useSettingsStore } from "~/lib/stores/settings-store";
+import { useWatchlistStore, WatchlistItem } from "~/lib/stores/watchlist-store";
+import { useEffect } from "react";
 
 export function ItemsList({
   items = [],
@@ -21,6 +22,7 @@ export function ItemsList({
   withPagination = false,
   currentPage,
   totalPages,
+  defaultDisplayMode,
 }: {
   items: Resource[];
   title: string;
@@ -30,47 +32,72 @@ export function ItemsList({
   itemsPerPage?: number;
   currentPage?: number;
   totalPages?: number;
+  defaultDisplayMode?: DisplayMode;
 }) {
   const displayMode = useSettingsStore((store) => store.displayMode);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  let displayedContent;
 
-  const goToNextPage = () => {
+  useEffect(() => {
+    useSettingsStore.persist.rehydrate();
+  }, []);
+
+  const generatePath = (page: "next" | "prev") => {
     const params = new URLSearchParams();
     const genre = searchParams.get("genre") ?? "";
-    const page = String((currentPage ?? 1) + 1);
     params.set("genre", genre);
-    params.set("page", page);
-    const path = decodeURIComponent(`${pathname}?${params.toString()}`);
-    router.push(path);
+    params.set("page", String((currentPage ?? 1) + (page === "next" ? 1 : -1)));
+    return decodeURIComponent(`${pathname}?${params.toString()}`);
+  };
+
+  const goToNextPage = () => {
+    router.push(generatePath("next"));
   };
 
   const goToPreviousPage = () => {
-    const params = new URLSearchParams();
-    const genre = searchParams.get("genre") ?? "";
-    const page = String((currentPage ?? 1) - 1);
-    params.set("genre", genre);
-    params.set("page", page);
-    const path = decodeURIComponent(`${pathname}?${params.toString()}`);
-    router.push(path);
+    router.push(generatePath("prev"));
   };
+
+  if (defaultDisplayMode && defaultDisplayMode === "grid") {
+    displayedContent = (
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
+        {(shortened ? items.slice(0, 12) : items).map((item) => (
+          <ListItem key={item.id} item={item} hrefType={hrefType} />
+        ))}
+      </div>
+    );
+  }
+
+  if (defaultDisplayMode && defaultDisplayMode === "carousel") {
+    displayedContent = (
+      <div>
+        <Carousel items={items} hrefType={hrefType} />
+      </div>
+    );
+  }
+
+  if (!defaultDisplayMode) {
+    displayedContent =
+      displayMode === "carousel" ? (
+        <div>
+          <Carousel items={items} hrefType={hrefType} />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+          {(shortened ? items.slice(0, 12) : items).map((item) => (
+            <ListItem key={item.id} item={item} hrefType={hrefType} />
+          ))}
+        </div>
+      );
+  }
 
   return (
     <div className="p-4 px-8 pt-8">
       <h5 className="pb-4 text-3xl font-semibold tracking-tighter">{title}</h5>
 
-      {displayMode === "carousel" ? (
-        <div>
-          <Carousel items={items} hrefType={hrefType} />
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
-          {(shortened ? items.slice(0, 12) : items).map((item) => (
-            <ListItem key={item.id} item={item} hrefType={hrefType} />
-          ))}
-        </div>
-      )}
+      {displayedContent}
 
       {withPagination ? (
         <Pagination
@@ -85,7 +112,12 @@ export function ItemsList({
 }
 
 function ListItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv" }) {
-  const [watchlist, setWatchlist] = useLocalStorage("watchlist");
+  const watchlist = useWatchlistStore((store) => store.watchlist);
+  const setWatchlist = useWatchlistStore((store) => store.setWatchlist);
+
+  useEffect(() => {
+    useWatchlistStore.persist.rehydrate();
+  }, []);
 
   const addToWatchList = (e: React.MouseEvent<HTMLButtonElement>, item: Resource) => {
     e.preventDefault();
@@ -98,7 +130,8 @@ function ListItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv
         ...(item.title && { title: item.title }),
         ...(item.name && { name: item.name }),
         ...(item.poster_path && { poster_path: item.poster_path }),
-      };
+        resourceType: hrefType === "movies" ? "movie" : "tv",
+      } as WatchlistItem;
 
       setWatchlist([...watchlist, newItem]);
     }
