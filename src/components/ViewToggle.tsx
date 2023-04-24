@@ -1,14 +1,19 @@
 "use client";
 
+import { useEffect } from "react";
 import * as ToggleGroup from "@radix-ui/react-toggle-group";
 import { IconGridDots, IconCarouselHorizontal } from "@tabler/icons-react";
-import { DisplayMode, useSettingsStore } from "~/lib/stores/settingsStore";
+import { DisplayMode, useSettingsStore } from "~/lib/stores/settings-store";
 
 const toggleGroupItemClassName = `hover:bg-pink-500/40 data-[state=on]:bg-pink-500/50 rounded-md p-1`;
 
 export function ViewToggle() {
   const displayMode = useSettingsStore((store) => store.displayMode);
   const setDisplayMode = useSettingsStore((store) => store.setDisplayMode);
+
+  useEffect(() => {
+    useSettingsStore.persist.rehydrate();
+  }, []);
 
   return (
     <div className="flex items-center p-4 px-8">
