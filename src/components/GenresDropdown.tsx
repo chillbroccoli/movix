@@ -8,11 +8,7 @@ import { useEffect, useState } from "react";
 import { getGenres } from "~/lib/api";
 import { BREAKPOINTS } from "~/lib/constants/breakpoints";
 import { useMediaQuery } from "~/lib/hooks/useMediaQuery";
-
-type Genre = {
-  id: number;
-  name: string;
-};
+import { Genre } from "~/lib/types";
 
 export function GenresDropdown() {
   const router = useRouter();
