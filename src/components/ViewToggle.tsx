@@ -20,7 +20,7 @@ export function ViewToggle() {
       <ToggleGroup.Root
         type="single"
         value={displayMode}
-        onValueChange={(val: DisplayMode) => setDisplayMode(val)}
+        onValueChange={(value: DisplayMode) => setDisplayMode(value)}
         aria-label="View of displayed items"
         className="inline-flex p-1 px-2 space-x-1 rounded-md bg-pink-500/30"
       >
