@@ -7,7 +7,7 @@ export async function getResource(url: string) {
   const res = await fetch(url);
   const data = await res.json();
 
-  if (!data.success) {
+  if (!!data.success) {
     throw new Error(data?.status_message ?? "Something went wrong");
   }
 
