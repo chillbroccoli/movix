@@ -38,6 +38,13 @@ export function ItemsList({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const itemsToDisplay = shortened ? items.slice(0, 12) : items;
+  const shouldDisplayItemList =
+    (defaultDisplayMode && defaultDisplayMode === "grid") ||
+    (!defaultDisplayMode && displayMode === "grid");
+  const shouldDisplayCarousel =
+    (defaultDisplayMode && defaultDisplayMode === "carousel") ||
+    (!defaultDisplayMode && displayMode === "carousel");
   let displayedContent;
 
   useEffect(() => {
@@ -60,37 +67,22 @@ export function ItemsList({
     router.push(generatePath("prev"));
   };
 
-  if (defaultDisplayMode && defaultDisplayMode === "grid") {
+  if (shouldDisplayItemList) {
     displayedContent = (
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-6">
-        {(shortened ? items.slice(0, 12) : items).map((item) => (
+        {itemsToDisplay.map((item) => (
           <ListItem key={item.id} item={item} hrefType={hrefType} />
         ))}
       </div>
     );
   }
 
-  if (defaultDisplayMode && defaultDisplayMode === "carousel") {
+  if (shouldDisplayCarousel) {
     displayedContent = (
       <div>
         <Carousel items={items} hrefType={hrefType} />
       </div>
     );
-  }
-
-  if (!defaultDisplayMode) {
-    displayedContent =
-      displayMode === "carousel" ? (
-        <div>
-          <Carousel items={items} hrefType={hrefType} />
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
-          {(shortened ? items.slice(0, 12) : items).map((item) => (
-            <ListItem key={item.id} item={item} hrefType={hrefType} />
-          ))}
-        </div>
-      );
   }
 
   return (
