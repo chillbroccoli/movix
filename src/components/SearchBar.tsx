@@ -12,7 +12,11 @@ export function SearchBar() {
     e.preventDefault();
 
     if (query) {
-      router.push(`/search?q=${query}`);
+      const pathname = "/search";
+      const params = new URLSearchParams();
+      params.set("q", query);
+      const href = decodeURIComponent(`${pathname}?${params.toString()}`);
+      router.push(href);
     }
   };
 
