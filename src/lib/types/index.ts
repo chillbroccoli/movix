@@ -159,3 +159,8 @@ export type TvShowDetails = {
 };
 
 export type HrefType = "movie" | "tv";
+
+export type Genre = {
+  id: number;
+  name: string;
+};
