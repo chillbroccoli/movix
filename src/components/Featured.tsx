@@ -23,13 +23,12 @@ export function Featured({ item }: { item: Resource }) {
 }
 
 function BackdropImage({ item }: { item: Resource }) {
+  const imageSrc = `${BACKDROP_IMAGE.W1280}${item.backdrop_path}`;
+  const imageAlt = item?.title ?? item?.name ?? "";
+
   return (
     <div className="relative w-full h-full">
-      <Image
-        src={`${BACKDROP_IMAGE.W1280}${item.backdrop_path}`}
-        alt={item?.title ?? item?.name ?? ""}
-        fill
-      />
+      <Image src={imageSrc} alt={imageAlt} fill />
     </div>
   );
 }
