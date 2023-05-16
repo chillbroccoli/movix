@@ -10,7 +10,7 @@ export type Trending = {
   original_title: string;
   overview: string;
   poster_path: string;
-  media_type: "movie" | "tv";
+  media_type: HrefType;
   popularity: number;
   video: boolean;
   vote_average: number;
@@ -69,7 +69,7 @@ export type Resource = {
   original_title?: string;
   original_language?: string;
   title?: string;
-  media_type?: "movie" | "tv";
+  media_type?: HrefType;
   video?: boolean;
   origin_country?: string[];
 };
@@ -157,3 +157,5 @@ export type TvShowDetails = {
   number_of_episodes: number;
   number_of_seasons: number;
 };
+
+export type HrefType = "movie" | "tv";
