@@ -8,7 +8,7 @@ import { BREAKPOINTS } from "~/lib/constants/breakpoints";
 import { convertTime } from "~/lib/helpers/convertTime";
 import { formatMoney } from "~/lib/helpers/formatMoney";
 import { useMediaQuery } from "~/lib/hooks/useMediaQuery";
-import { useWatchlistStore, WatchlistItem } from "~/lib/stores/watchlist-store";
+import { useWatchlistStore } from "~/lib/stores/watchlist-store";
 import { MovieDetails, Resource } from "~/lib/types";
 import { Carousel } from "./Carousel";
 
@@ -29,10 +29,12 @@ export function MovieDetails({ item, similar }: { item: MovieDetails; similar: R
 }
 
 function MoviePosterImage({ src, title }: { src?: string; title: string }) {
+  const imageSrc = `${POSTER_IMAGE.W342}${src}`;
+
   return (
     <div className="relative h-[450px] w-full lg:w-fit lg:min-w-[350px] overflow-hidden border-2 border-gray-700 rounded-md">
       <Image
-        src={`${POSTER_IMAGE.W342}${src}`}
+        src={imageSrc}
         alt={title}
         fill
         className="transition-all duration-200 ease-in-out group-hover:scale-110"
@@ -44,27 +46,20 @@ function MoviePosterImage({ src, title }: { src?: string; title: string }) {
 function MovieDetailsInfo({ item }: { item: MovieDetails }) {
   const matchesLargeScreen = useMediaQuery(`(min-width: ${BREAKPOINTS.LG}px)`);
   const watchlist = useWatchlistStore((store) => store.watchlist);
-  const setWatchlist = useWatchlistStore((store) => store.setWatchlist);
+  const addToWatchlist = useWatchlistStore((store) => store.addToWatchlist);
+  const itemInWatchlist = (watchlist ?? []).find(
+    (itemInList: Resource) => itemInList.id === item.id
+  );
+  const imdbHref = `${IMDB_LINK_BASE_URL}/${item.imdb_id}`;
 
   useEffect(() => {
     useWatchlistStore.persist.rehydrate();
   }, []);
 
-  const addToWatchList = (e: React.MouseEvent<HTMLButtonElement>, item: Resource) => {
+  const handleAddToWatchlistClick = (e: React.MouseEvent<HTMLButtonElement>, item: Resource) => {
     e.preventDefault();
-    if ((watchlist ?? []).find((itemInList: Resource) => itemInList.id === item.id)) {
-      setWatchlist(watchlist.filter((itemInList: Resource) => itemInList.id !== item.id));
-    } else {
-      const newItem = {
-        id: item.id,
-        ...(item.title && { title: item.title }),
-        ...(item.name && { name: item.name }),
-        ...(item.poster_path && { poster_path: item.poster_path }),
-        resourceType: "movie",
-      } as WatchlistItem;
 
-      setWatchlist([...watchlist, newItem]);
-    }
+    addToWatchlist(item, "movies");
   };
 
   return (
@@ -78,10 +73,10 @@ function MovieDetailsInfo({ item }: { item: MovieDetails }) {
       {!matchesLargeScreen ? (
         <div className="pt-4 lg:pt-0">
           <button
-            onClick={(e) => addToWatchList(e, item)}
+            onClick={(event) => handleAddToWatchlistClick(event, item)}
             className="inline-flex items-center px-3 py-2 text-sm font-semibold text-white bg-transparent border rounded-md shadow-sm border-pink-500/70 w-fit focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
           >
-            {(watchlist ?? []).find((itemInList: Resource) => itemInList.id === item.id) ? (
+            {itemInWatchlist ? (
               <IconHeartFilled className="text-pink-500/70" />
             ) : (
               <IconHeart className="text-pink-500/70" />
@@ -94,7 +89,7 @@ function MovieDetailsInfo({ item }: { item: MovieDetails }) {
         <div className="pt-4 lg:pt-0">
           <a
             className="inline-flex items-center gap-x-1.5 rounded-md bg-pink-600 py-2 px-3 text-sm font-semibold text-white shadow-sm hover:bg-pink-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600"
-            href={`${IMDB_LINK_BASE_URL}/${item.imdb_id}`}
+            href={imdbHref}
             target="_blank"
             rel="noreferrer noopener"
           >
