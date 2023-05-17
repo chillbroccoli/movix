@@ -101,6 +101,8 @@ function ListItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv
       : item.media_type === "tv"
       ? `/tv/${item.id}`
       : `/${hrefType}/${item.id}`;
+  const watchlistItemType =
+    item.media_type === "movie" ? "movies" : item.media_type === "tv" ? "tv" : hrefType;
 
   useEffect(() => {
     useWatchlistStore.persist.rehydrate();
@@ -109,7 +111,7 @@ function ListItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv
   const handleAddToWatchlistClick = (e: React.MouseEvent<HTMLButtonElement>, item: Resource) => {
     e.preventDefault();
 
-    addToWatchlist(item, hrefType);
+    addToWatchlist(item, watchlistItemType);
   };
 
   return (

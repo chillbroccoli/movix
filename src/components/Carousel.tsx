@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 import imageNotFound from "~/images/image_not_available.png";
 import { POSTER_IMAGE } from "~/lib/constants";
-import { useWatchlistStore, WatchlistItem } from "~/lib/stores/watchlist-store";
+import { useWatchlistStore } from "~/lib/stores/watchlist-store";
 import { Resource } from "~/lib/types";
 
 export function Carousel({
@@ -17,6 +17,18 @@ export function Carousel({
   items: Resource[];
   hrefType?: "movies" | "tv";
 }) {
+  return (
+    <div>
+      <div className="flex p-4 space-x-6 overflow-x-scroll flex-nowrap snap-x">
+        {items.map((item) => (
+          <CarouselItem key={item.id} item={item} hrefType={hrefType} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CarouselItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv" }) {
   const watchlist = useWatchlistStore((store) => store.watchlist);
   const addToWatchlist = useWatchlistStore((store) => store.addToWatchlist);
 
@@ -24,45 +36,19 @@ export function Carousel({
     useWatchlistStore.persist.rehydrate();
   }, []);
 
-  const handleAddToWatchlistClick = (e: React.MouseEvent<HTMLButtonElement>, item: Resource) => {
-    e.preventDefault();
-
-    addToWatchlist(item, hrefType);
-  };
-
-  return (
-    <div>
-      <div className="flex p-4 space-x-6 overflow-x-scroll flex-nowrap snap-x">
-        {items.map((item) => (
-          <CarouselItem
-            key={item.id}
-            item={item}
-            hrefType={hrefType}
-            watchlist={watchlist}
-            handleAddToWatchlistClick={handleAddToWatchlistClick}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function CarouselItem({
-  item,
-  hrefType,
-  watchlist,
-  handleAddToWatchlistClick,
-}: {
-  item: Resource;
-  hrefType: "movies" | "tv";
-  watchlist: WatchlistItem[];
-  handleAddToWatchlistClick: (e: React.MouseEvent<HTMLButtonElement>, item: Resource) => void;
-}) {
   const itemInWatchlist = (watchlist ?? []).find(
     (itemInList: Resource) => itemInList.id === item.id
   );
+  const watchlistItemType =
+    item.media_type === "movie" ? "movies" : item.media_type === "tv" ? "tv" : hrefType;
   const imageSrc = item.poster_path ? `${POSTER_IMAGE.W342}${item.poster_path}` : imageNotFound;
   const imageAlt = item?.title ?? item?.name ?? "";
+
+  const handleAddToWatchlistClick = (e: React.MouseEvent<HTMLButtonElement>, item: Resource) => {
+    e.preventDefault();
+
+    addToWatchlist(item, watchlistItemType);
+  };
 
   return (
     <Link href={`/${hrefType}/${item.id}`} className="relative rounded-md group">
