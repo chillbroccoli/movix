@@ -1,3 +1,5 @@
+"use client";
+
 import { Featured } from "~/components/Featured";
 import { ItemsList } from "~/components/ItemsList";
 import { ViewToggle } from "~/components/ViewToggle";
