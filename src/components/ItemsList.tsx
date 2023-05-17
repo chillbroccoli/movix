@@ -95,11 +95,12 @@ function ListItem({ item, hrefType }: { item: Resource; hrefType: "movies" | "tv
   const itemInWatchlist = (watchlist ?? []).find(
     (itemInList: Resource) => itemInList.id === item.id
   );
-  const linkHref = hrefType
-    ? `/${hrefType}/${item.id}`
-    : item.media_type === "movie"
-    ? `/movies/${item.id}`
-    : `/tv/${item.id}`;
+  const linkHref =
+    item.media_type === "movie"
+      ? `/movies/${item.id}`
+      : item.media_type === "tv"
+      ? `/tv/${item.id}`
+      : `/${hrefType}/${item.id}`;
 
   useEffect(() => {
     useWatchlistStore.persist.rehydrate();
