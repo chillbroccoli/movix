@@ -1,3 +1,5 @@
+"use client";
+
 import { Featured } from "~/components/Featured";
 import { MovieDetails } from "~/components/MovieDetails";
 import { ListResponse, type MovieDetails as Details, Resource } from "~/lib/types";
