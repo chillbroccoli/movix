@@ -1,3 +1,5 @@
+"use client";
+
 import { Featured } from "~/components/Featured";
 import { TvShowDetails } from "~/components/TvShowDetails";
 import { ListResponse, Resource, type TvShowDetails as Details } from "~/lib/types";
