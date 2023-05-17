@@ -4,8 +4,6 @@ import { Genre, SearchParams, TvShow } from "~/lib/types";
 import { TvByGenreView } from "~/views/TvByGenre.view";
 
 export default async function TvByGenrePage({ searchParams }: { searchParams: SearchParams }) {
-  console.log("searchParams?.id", searchParams?.id);
-
   const [tv, genres] = await Promise.all([
     getByGenre("tv", searchParams?.id as string, Number(searchParams.page) ?? 1),
     getGenres("tv"),
