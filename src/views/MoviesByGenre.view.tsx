@@ -4,18 +4,20 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Featured } from "~/components/Featured";
 import { ItemsList } from "~/components/ItemsList";
 import { ViewToggle } from "~/components/ViewToggle";
+import { getRandomResource } from "~/lib/helpers/getRandomResource";
 import type { Genre, ListResponse, Movie } from "~/lib/types";
 
 type MoviesByGenreViewProps = {
   data: ListResponse<Movie>;
-  randomResource: Movie;
   genre: Genre;
 };
 
-export function MoviesByGenreView({ data, randomResource, genre }: MoviesByGenreViewProps) {
+export function MoviesByGenreView({ data, genre }: MoviesByGenreViewProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  const randomResource = getRandomResource<Movie>(data.results);
 
   const generatePath = (page: "next" | "prev") => {
     const params = new URLSearchParams();

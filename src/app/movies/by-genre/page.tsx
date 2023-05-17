@@ -11,7 +11,5 @@ export default async function MoviesByGenrePage({ searchParams }: { searchParams
 
   const genre = genres.genres.find((genre: Genre) => genre.id === Number(searchParams.id));
 
-  const randomResource = getRandomResource<Movie>(movies.results);
-
-  return <MoviesByGenreView data={movies} genre={genre} randomResource={randomResource} />;
+  return <MoviesByGenreView data={movies} genre={genre} />;
 }

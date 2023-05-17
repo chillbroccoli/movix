@@ -1,6 +1,5 @@
 import { getByGenre, getGenres } from "~/lib/api";
-import { getRandomResource } from "~/lib/helpers/getRandomResource";
-import { Genre, SearchParams, TvShow } from "~/lib/types";
+import { Genre, SearchParams } from "~/lib/types";
 import { TvByGenreView } from "~/views/TvByGenre.view";
 
 export default async function TvByGenrePage({ searchParams }: { searchParams: SearchParams }) {
@@ -11,7 +10,5 @@ export default async function TvByGenrePage({ searchParams }: { searchParams: Se
 
   const genre = genres.genres.find((genre: Genre) => genre.id === Number(searchParams?.id));
 
-  const randomResource = getRandomResource<TvShow>(tv.results);
-
-  return <TvByGenreView data={tv} genre={genre} randomResource={randomResource} />;
+  return <TvByGenreView data={tv} genre={genre} />;
 }
