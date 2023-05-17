@@ -43,7 +43,19 @@ export async function multiSearch(query?: string) {
     return null;
   }
 
-  return await getResource(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${query}`);
+  const res = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${query}`, {
+    next: {
+      revalidate: 0,
+    },
+    cache: "no-store"
+  });
+  const data = await res.json();
+
+  if (!!data.success) {
+    throw new Error(data?.status_message ?? "Something went wrong");
+  }
+
+  return data;
 }
 
 export const getGenres = async (type: HrefType) =>
