@@ -3,8 +3,8 @@ import { HrefType } from "../types";
 const BASE_URL = `https://api.themoviedb.org/3`;
 const API_KEY = process.env.API_KEY;
 
-export async function getResource(url: string) {
-  const res = await fetch(url);
+export async function getResource(url: string, opts?: RequestInit) {
+  const res = await fetch(url, opts);
   const data = await res.json();
 
   if (!!data.success) {
@@ -43,19 +43,12 @@ export async function multiSearch(query?: string) {
     return null;
   }
 
-  const res = await fetch(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${query}`, {
+  return await getResource(`${BASE_URL}/search/multi?api_key=${API_KEY}&query=${query}`, {
     next: {
       revalidate: 0,
     },
-    cache: "no-store"
+    cache: "no-store",
   });
-  const data = await res.json();
-
-  if (!!data.success) {
-    throw new Error(data?.status_message ?? "Something went wrong");
-  }
-
-  return data;
 }
 
 export const getGenres = async (type: HrefType) =>
