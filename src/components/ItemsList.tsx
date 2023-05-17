@@ -23,6 +23,8 @@ export function ItemsList({
   currentPage,
   totalPages,
   defaultDisplayMode,
+  goToPreviousPage,
+  goToNextPage,
 }: {
   items: Resource[];
   title: string;
@@ -33,11 +35,10 @@ export function ItemsList({
   currentPage?: number;
   totalPages?: number;
   defaultDisplayMode?: DisplayMode;
+  goToPreviousPage?: () => void;
+  goToNextPage?: () => void;
 }) {
   const displayMode = useSettingsStore((store) => store.displayMode);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const itemsToDisplay = shortened ? items.slice(0, 12) : items;
   const shouldDisplayItemList =
     (defaultDisplayMode && defaultDisplayMode === "grid") ||
@@ -50,22 +51,6 @@ export function ItemsList({
   useEffect(() => {
     useSettingsStore.persist.rehydrate();
   }, []);
-
-  const generatePath = (page: "next" | "prev") => {
-    const params = new URLSearchParams();
-    const genre = searchParams.get("genre") ?? "";
-    params.set("genre", genre);
-    params.set("page", String((currentPage ?? 1) + (page === "next" ? 1 : -1)));
-    return decodeURIComponent(`${pathname}?${params.toString()}`);
-  };
-
-  const goToNextPage = () => {
-    router.push(generatePath("next"));
-  };
-
-  const goToPreviousPage = () => {
-    router.push(generatePath("prev"));
-  };
 
   if (shouldDisplayItemList) {
     displayedContent = (
@@ -91,7 +76,7 @@ export function ItemsList({
 
       {displayedContent}
 
-      {withPagination ? (
+      {withPagination && goToNextPage && goToPreviousPage ? (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
