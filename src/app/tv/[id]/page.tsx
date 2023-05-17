@@ -1,6 +1,5 @@
-import { Featured } from "~/components/Featured";
-import { TvShowDetails } from "~/components/TvShowDetails";
 import { getDetails, getSimilar } from "~/lib/api";
+import { TvShowView } from "~/views/TvShow.view";
 
 export default async function TvShowPage({ params }: { params: { id: string } }) {
   const [details, similar] = await Promise.all([
@@ -8,10 +7,5 @@ export default async function TvShowPage({ params }: { params: { id: string } })
     getSimilar("tv", params.id),
   ]);
 
-  return (
-    <div className="w-full">
-      <Featured item={details} />
-      <TvShowDetails item={details} similar={similar.results} />
-    </div>
-  );
+  return <TvShowView details={details} similar={similar} />;
 }
