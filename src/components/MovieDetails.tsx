@@ -3,6 +3,7 @@
 import { IconExternalLink, IconHeart, IconHeartFilled, IconStarFilled } from "@tabler/icons-react";
 import Image from "next/image";
 import { useEffect } from "react";
+
 import { IMDB_LINK_BASE_URL, POSTER_IMAGE } from "~/lib/constants";
 import { BREAKPOINTS } from "~/lib/constants/breakpoints";
 import { convertTime } from "~/lib/helpers/convertTime";
@@ -10,6 +11,7 @@ import { formatMoney } from "~/lib/helpers/formatMoney";
 import { useMediaQuery } from "~/lib/hooks/useMediaQuery";
 import { useWatchlistStore } from "~/lib/stores/watchlist-store";
 import { MovieDetails, Resource } from "~/lib/types";
+
 import { Carousel } from "./Carousel";
 
 export function MovieDetails({ item, similar }: { item: MovieDetails; similar: Resource[] }) {

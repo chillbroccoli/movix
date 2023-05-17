@@ -1,9 +1,10 @@
 import "./globals.css";
 
-import { Inter } from "next/font/google";
 import clsx from "clsx";
-import { Sidebar } from "~/components/Sidebar";
+import { Inter } from "next/font/google";
+
 import { Footer } from "~/components/Footer";
+import { Sidebar } from "~/components/Sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 

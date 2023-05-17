@@ -1,6 +1,5 @@
 import { getByGenre, getGenres } from "~/lib/api";
-import { getRandomResource } from "~/lib/helpers/getRandomResource";
-import { Genre, Movie, SearchParams } from "~/lib/types";
+import { Genre, SearchParams } from "~/lib/types";
 import { MoviesByGenreView } from "~/views/MoviesByGenre.view";
 
 export default async function MoviesByGenrePage({ searchParams }: { searchParams: SearchParams }) {

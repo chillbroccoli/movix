@@ -5,6 +5,7 @@ import * as Tabs from "@radix-ui/react-tabs";
 import { IconMenu2 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
 import { getGenres } from "~/lib/api";
 import { BREAKPOINTS } from "~/lib/constants/breakpoints";
 import { useMediaQuery } from "~/lib/hooks/useMediaQuery";

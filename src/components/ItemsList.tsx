@@ -1,18 +1,19 @@
 "use client";
 
-import { IconHeart, IconHeartFilled, IconStarFilled, IconCalendar } from "@tabler/icons-react";
+import { IconCalendar, IconHeart, IconHeartFilled, IconStarFilled } from "@tabler/icons-react";
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import clsx from "clsx";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+
 import imageNotFound from "~/images/image_not_available.png";
 import { POSTER_IMAGE } from "~/lib/constants";
-import { Resource } from "~/lib/types";
-import { Pagination } from "./Pagination";
-import { Carousel } from "./Carousel";
 import { DisplayMode, useSettingsStore } from "~/lib/stores/settings-store";
 import { useWatchlistStore } from "~/lib/stores/watchlist-store";
-import { useEffect } from "react";
+import { Resource } from "~/lib/types";
+
+import { Carousel } from "./Carousel";
+import { Pagination } from "./Pagination";
 
 export function ItemsList({
   items = [],

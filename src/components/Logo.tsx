@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+
 import logo from "~/images/movix-color.png";
 
 export function Logo() {

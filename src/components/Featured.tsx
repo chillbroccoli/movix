@@ -2,6 +2,7 @@
 
 import { IconStarFilled } from "@tabler/icons-react";
 import Image from "next/image";
+
 import { BACKDROP_IMAGE } from "~/lib/constants";
 import { BREAKPOINTS } from "~/lib/constants/breakpoints";
 import { trimLongText } from "~/lib/helpers/trimLongText";

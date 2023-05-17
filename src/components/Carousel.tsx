@@ -1,14 +1,14 @@
 "use client";
 
+import { IconHeart, IconHeartFilled } from "@tabler/icons-react";
 import Image from "next/image";
 import Link from "next/link";
-
-import { POSTER_IMAGE } from "~/lib/constants";
-import { Resource } from "~/lib/types";
-import imageNotFound from "~/images/image_not_available.png";
-import { IconHeart, IconHeartFilled } from "@tabler/icons-react";
-import { useWatchlistStore, WatchlistItem } from "~/lib/stores/watchlist-store";
 import { useEffect } from "react";
+
+import imageNotFound from "~/images/image_not_available.png";
+import { POSTER_IMAGE } from "~/lib/constants";
+import { useWatchlistStore, WatchlistItem } from "~/lib/stores/watchlist-store";
+import { Resource } from "~/lib/types";
 
 export function Carousel({
   items,

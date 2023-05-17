@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { SIDE_NAV } from "~/lib/constants";
+
 import { GenresDropdown } from "./GenresDropdown";
 
 export function Nav() {

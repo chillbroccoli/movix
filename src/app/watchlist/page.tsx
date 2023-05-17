@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+
 import { ItemsList } from "~/components/ItemsList";
 import { ViewToggle } from "~/components/ViewToggle";
 import { useWatchlistStore, WatchlistItem } from "~/lib/stores/watchlist-store";

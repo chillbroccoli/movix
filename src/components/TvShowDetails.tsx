@@ -3,6 +3,7 @@
 import { IconHeart, IconHeartFilled, IconStarFilled } from "@tabler/icons-react";
 import Image from "next/image";
 import { useEffect } from "react";
+
 import { POSTER_IMAGE } from "~/lib/constants";
 import { BREAKPOINTS } from "~/lib/constants/breakpoints";
 import { convertTime } from "~/lib/helpers/convertTime";
@@ -10,6 +11,7 @@ import { getAverage } from "~/lib/helpers/getAverage";
 import { useMediaQuery } from "~/lib/hooks/useMediaQuery";
 import { useWatchlistStore, WatchlistItem } from "~/lib/stores/watchlist-store";
 import { Resource, TvShowDetails } from "~/lib/types";
+
 import { Carousel } from "./Carousel";
 
 export function TvShowDetails({ item, similar }: { item: TvShowDetails; similar: Resource[] }) {
