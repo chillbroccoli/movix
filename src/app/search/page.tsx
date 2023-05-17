@@ -12,7 +12,7 @@ export default async function SearchPage({ searchParams }: { searchParams?: Sear
       {!!data?.results?.length && (
         <ItemsList
           items={data.results}
-          title={`Search result for: ${searchParams?.q}`}
+          title={`Search results for: ${searchParams?.q}`}
           defaultDisplayMode="grid"
         />
       )}
