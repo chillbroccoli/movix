@@ -68,7 +68,7 @@ export function GenresDropdown() {
                     className="p-1 border border-pink-500 rounded-md outline-none data-[highlighted]:bg-pink-500/30 transition-all duration-200 ease-in-out"
                   >
                     {/* Need to use buttons since, closing menu it's kinda not working with links */}
-                    <button onClick={() => router.push(`/movies?genre=${genre.id}&page=1`)}>
+                    <button onClick={() => router.push(`/movies/by-genre?id=${genre.id}&page=1`)}>
                       <span>{genre.name}</span>
                     </button>
                   </DropdownMenu.Item>
@@ -82,7 +82,7 @@ export function GenresDropdown() {
                     key={genre.id}
                     className="p-1 border border-pink-500 rounded-md outline-none data-[highlighted]:bg-pink-500/30 transition-all duration-200 ease-in-out"
                   >
-                    <button onClick={() => router.push(`/tv?genre=${genre.id}&page=1`)}>
+                    <button onClick={() => router.push(`/tv/by-genre?id=${genre.id}&page=1`)}>
                       <span>{genre.name}</span>
                     </button>
                   </DropdownMenu.Item>
